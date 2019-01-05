@@ -1,0 +1,27 @@
+{
+  "name": "dnews",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BetaSu/dnews.git"
+  },
+  "author": "su",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BetaSu/dnews/issues"
+  },
+  "homepage": "https://github.com/BetaSu/dnews#readme",
+  "dependencies": {
+    "mongodb": "^3.1.10",
+    "puppeteer": "^1.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.11.1",
+    "eslint-config-think": "^1.0.2"
+  }
+}
