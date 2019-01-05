@@ -8,6 +8,9 @@ const init = async() => {
     headless: true
   });
   await getDataByKeyword({browser, keyword, level});
+  console.log('                          ');
+  console.log('    任  务  完  成      ');
+  process.exit(0);
 };
 
 module.exports = init;
