@@ -1,6 +1,6 @@
 const {insertData} = require('./model');
 
-const getOnePageData = async(page, keyword) => {
+const getOnePageData = async({page, keyword}) => {
   const data = await page.$$eval('#content_left .result', resultList => {
     function parseItem(el) {
       const $el = $(el);
@@ -24,7 +24,19 @@ const getOnePageData = async(page, keyword) => {
   return data.length;
 };
 
-const toNextPage = async page => {
+const getRelateSearch = async({page}) => {
+  return await page.$$eval('#rs a', list => {
+    return list.map(a => {
+      const $el = $(a);
+      return {
+        url: $el.attr('href'),
+        content: $el.text()
+      };
+    });
+  });
+};
+
+const toNextPage = async({page}) => {
   const btns = await page.$$('#page .n');
   for (let i = 0; i < btns.length; i++) {
     const curBtn = btns[i];
@@ -42,20 +54,40 @@ const toNextPage = async page => {
   return false;
 };
 
-const getDataByKeyword = async(page, keyword) => {
+const initFirstPage = async({browser, keyword}) => {
+  const page = await browser.newPage();
+  const url = `http://news.baidu.com/ns?word=${encodeURIComponent(keyword)}&tn=news&from=news&cl=2&rn=20&ct=1`;
+  await page.goto(url);
+  const relate = await getRelateSearch({page});
+  return {
+    page,
+    relate
+  };
+};
+
+const getDataByKeyword = async({browser, keyword, level, curLevel}) => {
+  curLevel = curLevel || 1;
+  if (curLevel > level) return;
+  const {page, relate} = await initFirstPage({browser, keyword});
   let dataLen = 0;
   let pageLen = 0;
-  await page.goto(`http://news.baidu.com/ns?word=${encodeURIComponent(keyword)}&tn=news&from=news&cl=2&rn=20&ct=1`);
-  dataLen += await getOnePageData(page, keyword);
-  while (await toNextPage(page)) {
+
+  dataLen += await getOnePageData({page, keyword});
+  while (await toNextPage({page})) {
     pageLen++;
-    dataLen += await getOnePageData(page, keyword);
+    dataLen += await getOnePageData({page, keyword});
   }
-  console.log(`获取${keyword}数据完成，共爬取${pageLen}页，获取${dataLen}条。`);
+  await page.close();
+  console.log(`>-------------完成层级：${curLevel}，关键词：${keyword}，页数：${pageLen}，条数：${dataLen}`);
+  for (const relateItem of relate) {
+    const {content} = relateItem;
+    await getDataByKeyword({browser, keyword: content, level, curLevel: curLevel + 1});
+  }
 };
 
 module.exports = {
   getOnePageData,
   toNextPage,
-  getDataByKeyword
+  getDataByKeyword,
+  getRelateSearch
 };

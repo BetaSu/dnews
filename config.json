@@ -1,5 +1,6 @@
 {
-  "keywords": ["luckin coffee", "瑞幸咖啡"],
+  "keyword": "瑞幸咖啡",
+  "level": 3,
   "dbHost": "localhost",
   "dbName": "dnews",
   "dbPort": "27017"

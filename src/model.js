@@ -9,10 +9,9 @@ const initCollections = async db => {
 
 const insertData = async data => {
   const exist = await curDB.collection(NEWS_COLLECTION_NAME).findOne({title: data.title});
-  console.warn('exit', exist);
   if (exist) return;
   await curDB.collection(NEWS_COLLECTION_NAME).insertOne(data);
-  console.log('爬取：', data.title);
+  // console.log('爬取：', data.title);
 };
 
 module.exports = {
