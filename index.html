@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- <script src="https://cdn.bootcss.com/echarts/2.2.6/chart/wordCloud.js"></script> -->
+    <!-- <script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts-en.common.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/echarts/2.2.7/echarts-all.js"></script>
+  </head>
+  <body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script src="./output/1546767875549.js"></script>
+    <script>
+      var myChart = echarts.init(document.getElementById("main"));
+
+      // 指定图表的配置项和数据
+      option = {
+        series: [
+          {
+            type: 'wordCloud',
+            shape: 'circle',
+            left: 'center',
+            top: 'center',
+            width: '70%',
+            height: '80%',
+            right: null,
+            bottom: null,
+            sizeRange: [12, 80],
+            rotationRange: [-90, 90],
+            rotationStep: 45,
+            gridSize: 8,
+            drawOutOfBound: false,
+            textStyle: {
+            normal: {
+              fontFamily: 'sans-serif',
+              fontWeight: 'bold',
+              // Color can be a callback function or a color string
+              color: function () {
+                  // Random color
+                  return 'rgb(' + [
+                      Math.round(Math.random() * 160),
+                      Math.round(Math.random() * 160),
+                      Math.round(Math.random() * 160)
+                  ].join(',') + ')';
+              }
+            },
+              emphasis: {
+                  shadowBlur: 10,
+                  shadowColor: '#333'
+              }
+          },
+          data: output.map(({word, weight}) => ({name: word, value: weight}))
+          }
+        ]
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    </script>
+  </body>
+</html>

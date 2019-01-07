@@ -5,7 +5,7 @@ const {getDataByKeyword} = require('./handle');
 
 const init = async() => {
   const browser = await puppeteer.launch({
-    headless: true
+    headless: false
   });
   await getDataByKeyword({browser, keyword, level});
   console.log('                          ');

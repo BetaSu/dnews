@@ -1,6 +1,6 @@
 {
   "keyword": "瑞幸咖啡",
-  "level": 3,
+  "level": 4,
   "dbHost": "localhost",
   "dbName": "dnews",
   "dbPort": "27017"
